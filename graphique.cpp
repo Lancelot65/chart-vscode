@@ -5,18 +5,6 @@ static bool collision_point(sf::RectangleShape& rect, float x_point, float y_poi
     return (rect.getPosition().x < x_point && x_point < rect.getPosition().x + rect.getSize().x && rect.getPosition().y < y_point && y_point < rect.getPosition().y + rect.getSize().y);
 }
 
-class candle
-{
-private:
-    double open;
-    double high;
-    double low;
-    double close;
-    double volume;   
-public:
- 
-};
-
 graphique::graphique(float x, float y, float width, float height, OHLCV _data) :
     data(_data), color_theme(th::Light)
     {
@@ -89,8 +77,8 @@ void graphique::create_candles()
 
             int plus = 1 + (largeur - 1) / 2;
 
-            this->shadow.append(sf::Vertex(sf::Vector2f(x + plus, (y_frame)-((this->data.high[i] - min) * (y_frame / diff_opp)) + 10), color));
-            this->shadow.append(sf::Vertex(sf::Vector2f(x + plus, (y_frame)-((this->data.low[i] - min) * (y_frame / diff_opp)) + 10), color));
+            this->shadow.append(sf::Vertex(sf::Vector2f(x + plus + this->rect.getPosition().x, (y_frame)-((this->data.high[i] - min) * (y_frame / diff_opp)) + 10 + this->rect.getPosition().y), color));
+            this->shadow.append(sf::Vertex(sf::Vector2f(x + plus + this->rect.getPosition().x, (y_frame)-((this->data.low[i] - min) * (y_frame / diff_opp)) + 10 + this->rect.getPosition().y), color));
 
             if (hauteur < 0 && hauteur > -1) {
                 hauteur = -1;
@@ -100,7 +88,7 @@ void graphique::create_candles()
             }
 
             sf::RectangleShape rectangle(sf::Vector2f(largeur, hauteur));
-            rectangle.setPosition(float(x), float(y));
+            rectangle.setPosition(float(x + this->rect.getPosition().x), float(y + this->rect.getPosition().y));
             rectangle.setFillColor(color);
             rectangle.setOutlineThickness(-1);
             rectangle.setOutlineColor(border_color);
@@ -116,24 +104,8 @@ void graphique::set_theme(th::Theme color_theme)
     this->create_candles();
 }
 
-void graphique::manage_event(sf::Event event)
+void graphique::update_data(OHLCV data)
 {
-    if (event.type == sf::Event::KeyPressed)
-    {
-        if (event.key.control)
-        {
-            if (event.key.code == sf::Keyboard::T)
-            {
-                if (this->color_theme.name == "Dark")
-                {
-                    this->set_theme(th::Light);
-                }
-                else
-                {
-                    this->set_theme(th::Dark);
-                }
-            }
-        }
-        return;
-    }
+    this->data = data;
+    this->create_candles();
 }

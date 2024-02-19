@@ -36,7 +36,7 @@ public:
 
     void set_theme(th::Theme color_theme);
 
-    void manage_event(sf::Event event);
+    void update_data(OHLCV data);
 };
 
 
