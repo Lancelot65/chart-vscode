@@ -1,5 +1,4 @@
 ﻿#include "graphique.hpp"
-#include "parametre.hpp"
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
@@ -18,13 +17,9 @@ private:
     float height_screen = 720;
 
     graphique Graphique;
-    parametre Parametre;
-
-    bool temp_click_resize_etat = false;
-
 public:
     chart(OHLCV _data) :
-        Graphique(100, 0, this->width_screen - 100, this->height_screen, _data), Parametre(0, 0, 100, this->height_screen) {}
+        Graphique(0, 0, this->width_screen, this->height_screen, _data) {}
 
     void loop()
     {
@@ -35,7 +30,6 @@ public:
         
         window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
-        this->Parametre.set_parametre(&window, &this->Graphique);
 
         while (window.isOpen())
         {
@@ -46,10 +40,6 @@ public:
                 {
                     window.close();
                     break;
-                }
-                else
-                {
-                    this->Parametre.manage_event(event);
                 }
             }
 
@@ -65,7 +55,6 @@ public:
     void draw(sf::RenderWindow& window)
     {
         this->Graphique.show(window);
-        this->Parametre.show();
     }
 };
 
