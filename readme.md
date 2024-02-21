@@ -1,0 +1,1 @@
+### this lib is an basic visual fiancial chart in c++
